@@ -61,10 +61,9 @@ a {
 }
 
 #foot {
-	top: 10%;
+	margin-top: 3%;
     position: relative;
     display: block;
-    margin: 0 auto;
 }
 
 .article {
