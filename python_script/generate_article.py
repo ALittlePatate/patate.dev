@@ -76,9 +76,6 @@ def generate_end_file() :
     base = '''
     <p></p></main></article>
     <footer id="foot">
-		<script type="text/javascript">
-            document.write('<img id="foot" src="https://counter.websiteout.net/compte.php?S='+encodeURI(window.location.hostname)+'&C=2&D=8&N=0&M=0" alt="" border="0"/>');
-        </script>
 		<a href="//gnu.org"><img alt="GNU/Linux" src="../images/footer/gnu_linux.png" /></a>
 		<img alt="" src="../images/footer/internet-privacy.gif" />
 		<a href="//torproject.org"><img alt="Tor" src="../images/footer/tor.gif" /></a>
