@@ -1,0 +1,71 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>~Blog of a French coder~</title>
+    <link rel="stylesheet" type="text/css" href="../css/styles.css"/>
+</head>
+<body>
+    <div class="header">
+        <a href="/">
+            <a href="../index.html"><img alt="Spike" src="../images/spike.jpg" id="spike"></a>
+        </a>
+        <div class="menu">
+            <a href="blog.html">the blog</a>
+			<a href="//github.com/ALittlePatate">github</a>
+            <a href="../pgp/key.txt">pgp key</a>
+        </div>
+    </div>
+
+  <article aria-label="Content" itemscope itemtype="http://schema.org/BlogPosting">
+    <h1 itemprop="name headline">-insecure mode bypass in CS:GO</h1>    
+
+<time class="mono"> Jan 31, 2022</time>
+
+<main itemprop="articleBody" style="position: relative">
+<p>Hey, in this short article i will present you how i found an exploit to join VAC secured community servers with the -insecure flag enabled on CS:GO.</p>
+<h2 id="A-bit-of-context">
+    <a href="#A-bit-of-context">A bit of context</a>
+</h2>
+<p>2 days ago, <a href="https://www.unknowncheats.me/forum/counterstrike-global-offensive/487812-insecure-mode-bypass.html" target="_blank">this exploit was released to unknonwcheats.</a> But as the file wasn't approved and it was only a DLL no matter what, i decided to try to replicate it myself without trying to reverse it. It wasn't that hard but it was a good learning opportunity !</p>
+<h2 id="How--insecure-works">
+    <a href="#How--insecure-works">How -insecure works</a>
+</h2>
+<p>The <code class="language-plaintext highlighter-rouge">-insecure</code> flag is used to disable VAC and still launch CS:GO, it is useful for debugging the game or to play with cheats without having a chance of VAC getting triggered. The thing is this flag prevents you from joining VAC secured servers such as community servers. This is what message you get if you try to connect to one with this flag enabled :</p>
+<p>
+    <img class="center_image" src="../images/insecure_mode_bypass/vac_insecure_error.png" width="40%" height="40%" alt="" />
+</p>
+<p>note for translation : You can't connect to the server because you have <code class="language-plaintext highlighter-rouge">-insecure</code> enabled.</p>
+<h2 id="How-to-bypass-that">
+    <a href="#How-to-bypass-that">How to bypass that</a>
+</h2>
+<p>Thanksfully the source code of 2k18 CS:GO leaked in 2020 and <a href="https://github.com/perilouswithadollarsign/cstrike15_src" target="_blank">is avalaible on Github.</a> After looking for <code class="language-plaintext highlighter-rouge">insecure</code> in the repo we quickly find a function named <code class="language-plaintext highlighter-rouge">Host_IsSecureServerAllowed</code>, which looks like this :</p>
+<p>
+    <img class="center_image" src="../images/insecure_mode_bypass/Host_IsSecureServerAllowed.png" alt="" />
+</p>
+<p>But remember, this is from 2018 CS:GO, we still need to find it in IDA, same thing in IDA, load <code class="language-plaintext highlighter-rouge">engine.dll</code> and look for the <code class="language-plaintext highlighter-rouge">insecure</code> string, by looking at the xrefs we can find 2022 Host_IsSecureServerAllowed function :</p>
+<p>
+    <img class="center_image" src="../images/insecure_mode_bypass/Host_IsSecureServerAllowed_IDA.png" alt="" />
+</p>
+<p>We can see that the function is looking for <code class="language-plaintext highlighter-rouge">insecure</code> or <code class="language-plaintext highlighter-rouge">tools</code> or <code class="language-plaintext highlighter-rouge">edit</code> flags and if it find them, it returns false, thus kicking you from the server you are trying to join.</p><p>From here we can use the IDA plugin <a href="https://github.com/ajkhoury/SigMaker-x64" target="_blank">SigMaker</a> to generate a signature for this function. The only thing that is left to do is hook the function, and always return true so the check for the <code class="language-plaintext highlighter-rouge">insecure</code> flag are never performed.</p>
+<h2 id="Hooking-Host_IsSecureServerAllowed">
+    <a href="#Hooking-Host_IsSecureServerAllowed">Hooking Host_IsSecureServerAllowed</a>
+</h2>
+<p>Hooking this function with <a href="https://github.com/TsudaKageyu/minhook" target="_blank">MinHook</a> is pretty straightforward, here is the pseudo code :</p>
+<p>
+    <img class="center_image" src="../images/insecure_mode_bypass/hooking_Host_IsSecureServerAllowed.png" width="80%" height="auto" alt="" />
+</p>
+<p>We are basically defining the <code class="language-plaintext highlighter-rouge">Host_IsSecureServerAllowed</code> function, and in it, we just say to always return true. Then we scan for the (insanely long) signature for this function and hook it with MinHook.</p><p>From now, just build the DLL, inject into CS:GO and you'll see, with <code class="language-plaintext highlighter-rouge">-insecure</code> you'll be able to join VAC protected community servers.</p>
+<h2 id="Limitations">
+    <a href="#Limitations">Limitations</a>
+</h2>
+<p>At the writing of this blogpost, you can only join community servers with this flag enabled, this may change. Also, remember that even if you join a VAC secured server with this bypass, VAC will still be running thus this exploit is pretty useless. It was only a learning opportunity to me and shouldn't be considered as a VAC bypass.</p><p></p></main></article>
+  
+	<footer id="foot">
+		<script type="text/javascript">
+            document.write('<img id="foot" src="https://counter.websiteout.net/compte.php?S=patate.dev&C=2&D=8&N=0&M=0" alt="" border="0"/>');
+        </script>
+		<a href="//gnu.org"><img alt="GNU/Linux" src="../images/footer/gnu_linux.png" /></a>
+		<img alt="" src="../images/footer/internet-privacy.gif" />
+		<a href="//torproject.org"><img alt="Tor" src="../images/footer/tor.gif" /></a>
+	</footer>

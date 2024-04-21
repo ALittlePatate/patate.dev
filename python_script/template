@@ -1,0 +1,11 @@
+~foldername~template~foldername~
+~titre~Example~titre~
+~date~Jan 25, 2022~date~
+This is a paragraph
+This is another one with ~data~data text~data~ and ~link~[https://www.youtube.com/watch?v=UaH8cAGdjzw]a link.~link~
+~section~Title 1~section~
+Paragraph of Title 1
+~list~list element~list~
+~list~~data~data element in list~data~~list~
+~endlist~
+~image~serverlist.png~image~

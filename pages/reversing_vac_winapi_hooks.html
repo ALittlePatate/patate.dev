@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>~Blog of a French coder~</title>
+    <link rel="stylesheet" type="text/css" href="../css/styles.css"/>
+</head>
+<body>
+    <div class="header">
+        <a href="/">
+            <a href="../index.html"><img alt="Spike" src="../images/spike.jpg" id="spike"></a>
+        </a>
+        <div class="menu">
+            <a href="blog.html">the blog</a>
+			<a href="//github.com/ALittlePatate">github</a>
+            <a href="../pgp/key.txt">pgp key</a>
+        </div>
+    </div>
+
+  <article aria-label="Content" itemscope itemtype="http://schema.org/BlogPosting">
+    <h1 itemprop="name headline">Reversing VAC winapi hooks</h1>    
+
+<time class="mono"> Jun 02, 2022</time>
+
+<main itemprop="articleBody" style="position: relative">
+<p>Hello there, been a long time ! Today i will talk about the implementation of winapi hooks inside Valve Anti Cheat (aka VAC).</p>
+<h2 id="A-bit-of-context">
+    <a href="#A-bit-of-context">A bit of context</a>
+</h2>
+<p>Everything i will say is directly from <a href="https://www.unknowncheats.me/forum/counterstrike-global-offensive/501339-possibility-virtualprotect-hooked-valve.html" target="_blank">this topic on UC</a></p>
+<h2 id="What-is-hooking-?">
+    <a href="#What-is-hooking-?">What is hooking ?</a>
+</h2>
+<p>In the first place we need to properly understand the way hooking works. To hook a function you need to overwrite the first 5 bytes to <code class="language-plaintext highlighter-rouge">jmp 0xYOURADDR</code> where 0xYOURADDR is the memory address for the function that will replace the original (a pointer basically). We can also save the original function pointer to return to the original function after our code, this is called a trampoline (tramp) hook.</p>
+<p>
+    <img class="center_image" src="../images/reversing_vac_winapi_hooks/hooking_explained.png" alt="" />
+</p>
+
+<h2 id="What's-up-with-VAC-?">
+    <a href="#What's-up-with-VAC-?">What's up with VAC ?</a>
+</h2>
+<p>Some guy reported that VAC may be hooking VirtualProtect to check if you're messing with the game's code. Another one showed that <a href="https://www.unknowncheats.me/forum/3215599-post33.html" target="_blank">it has already been reported on UC in the past</a></p>
+<h2 id="Reversing-VAC">
+    <a href="#Reversing-VAC">Reversing VAC</a>
+</h2>
+<p>VAC is actually in GameOverlayRenderer.dll, which manages... the Steam overlay you got it. Pretty dumb design if you ask me but VAC always tries to think outside of the box. From now we just open the dll in IDA, search for the string "VirtualProtect" and we find it ! Here it is after some renaming :</p>
+<p>
+    <img class="center_image" src="../images/reversing_vac_winapi_hooks/winapi_hooks.PNG" alt="" />
+</p>
+<p>We can see that VAC actually hooks a ton of those winapi functions. For the code, it's pretty straight forward :</p><ul><li>We get the address of VirtualProtect in the memory with <code class="language-plaintext highlighter-rouge">GetProcAddress</code><code class="language-plaintext highlighter-rouge"></li></code><li>We hook the function by passing to <code class="language-plaintext highlighter-rouge">HookMethod</code> its pointer, the pointer of the modified function and the tramp pointer that we want to use.</li>Now we can actually start looking inside of the hook for VirtualProtect. Here is the cleaned code :
+<br>
+<p>
+    <img class="center_image" src="../images/reversing_vac_winapi_hooks/VirtualProtectHook.PNG" alt="" />
+</p>
+We see that the function is defined the same as the original one; you need to do this when hooking.This function basically executes VirtualProtect as usual with the trampoline pointer, sets the LastError and returns the result.But you may have noticed an if statement, pretty self explanatory but if the game we're running is a Valve game and we're trying to change the rights of the region to execute/read/write, then it jumps to <code class="language-plaintext highlighter-rouge">do_sketchy_stuff_0</code> which i haven't decompiled yet (lol) but it must have something to do with VAC reporting abuse.
+<h2 id="Conclusion">
+    <a href="#Conclusion">Conclusion</a>
+</h2>
+To conclude, reversing VAC is a great way of learning as it's not obfuscated/packed and the code is pretty easy to read. Bye.<p></p></main></article>
+
+<footer id="foot">
+		<script type="text/javascript">
+            document.write('<img id="foot" src="https://counter.websiteout.net/compte.php?S=patate.dev&C=2&D=8&N=0&M=0" alt="" border="0"/>');
+        </script>
+		<a href="//gnu.org"><img alt="GNU/Linux" src="../images/footer/gnu_linux.png" /></a>
+		<img alt="" src="../images/footer/internet-privacy.gif" />
+		<a href="//torproject.org"><img alt="Tor" src="../images/footer/tor.gif" /></a>
+	</footer>
