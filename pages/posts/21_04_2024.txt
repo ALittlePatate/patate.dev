@@ -1,0 +1,25 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Hey ! It's been a while, the last article i posted on here is from 2022 iirc and we are in 2024 !
+Happy new year i guess.
+I will probably write (soon) about malware engineering and the "cryptor" i made (https://github.com/ALittlePatate/patate-crypter).
+If you have an idea or just want to send me something, email me at: maxime@patate.dev
+
+See you, space cowboy !
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEduDWQnSE27L7ZJAPMWAkNmH+np0FAmYlgfwACgkQMWAkNmH+
+np1sSg/+P7hUYOQBpuPfjfy8rIy13joMnJe6/YDhTsE1Dfk20ZG6x0/95PMu+6IT
+DWpvVw0IMBa0ZZRffbBP51cSTK16RulGIk6waTSVaFqADoS4oTH7G6cTtzdjkGWJ
+gZv2a/5DFOKN8lpalPPp0MDRObX+1qh3d0hkA6FDm3Gt5t0efbnHnlFT1J94t0R5
+/T9DF+MCrBVVhbOWHq1G4kBkEyzgUZ+Hx1tme305rSw10rx8IV1970bpJCTxAOqB
+dmkiIPhZrzUDyJcHMghUsYVuj382U1MeHReTtmDdqSY5Gv08enlbSb48rX7RJFm9
+qjCFD6A/t67Jmr9ghqJ9+CDTTx3L4nPVhxQbclF+BvYtFeLWFN0+Qni6qzFljFqm
+LtxlFr+DESjJjhC0puLC3KphLeJSj1oNeiz/p/H9koM1nJFZNcOFXi+qYS7F8R+N
+ev8MXLNZKvpK75NjjUKTtmpu8EVkkPjiT3AkK3fWrKh5C/4goai5zuyPBV0eWB/K
+Jphq15BIYqIl5RBJyrosrNfCc6/AlvV5BKoa5Lenfsap231Em/BPV0MSLozgVwcE
+tLFhv1LCBR4WiqRpWBIWW2ol1MiTG+V3bTQGrqJ9EvdDrzwFrPkvwYdmxttaPiO1
+rV7Uw2cWrtd1w8imtgPi65koiKGcjrOiypASjJKM9FYcZrYWH78=
+=bKpi
+-----END PGP SIGNATURE-----
