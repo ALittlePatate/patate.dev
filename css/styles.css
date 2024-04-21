@@ -2,10 +2,16 @@
     float: left;
     border-style:solid;
 	border-color:rgba(18,24,217,0.6);
-    width: 8.1%;
+    width: 10.1%;
     height: auto;
 	max-width: 100%;
 	object-fit: cover;
+}
+
+/* centers the website */
+html {
+	max-width: 1200px;
+	margin: auto;
 }
 
 /* unvisited link */
@@ -41,7 +47,7 @@ a:active {
 .menu  {
     font-weight: bold;
     float: left;
-    margin-top: 5.2%;
+    margin-top: 6.2%;
     margin-left: 0.5%;
 }
 
