@@ -1,11 +1,11 @@
 #spike {
     float: left;
     border-style:solid;
-	border-color:rgba(18,24,217,0.6);
+    border-color:rgba(18,24,217,0.6);
     width: 10.1%;
     height: auto;
-	max-width: 100%;
-	object-fit: cover;
+    max-width: 100%;
+    object-fit: cover;
 }
 
 /* centers the website */
@@ -39,16 +39,16 @@ a:active {
     height: auto;
     overflow:auto;
     background-color: rgba(18,24,217,0.6);
-	top: 0;
-	left:0px;
-	right:0px;
+    top: 0;
+    left:0px;
+    right:0px;
 }
 
 .menu  {
+    display: flex;
+    gap: 10px;
     font-weight: bold;
-    float: left;
-    margin-top: 6.2%;
-    margin-left: 0.5%;
+    margin-top: 6.4%;
 }
 
 body {
