@@ -26,10 +26,7 @@ def write_file(text) :
 
 def generate_base(title) :
     base = """
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
     <!--#include virtual="header.html" -->
-<body>
-
   <article aria-label="Content" itemscope itemtype="http://schema.org/BlogPosting">
     <h1 itemprop="name headline">"""+title+"""</h1>    
 """
@@ -61,6 +58,7 @@ def generate_end_file() :
     base = '''
     <p></p></main></article>
     <!--#include virtual="footer.html" -->
+    </body>
     </html>'''
     
     write_file(base)

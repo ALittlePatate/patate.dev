@@ -10,8 +10,11 @@
 
 /* centers the website */
 html {
-	max-width: 1200px;
-	margin: auto;
+    background: rgb(18,24,217);
+    background-color: rgba(18,24,217);
+    background: url(../images/bg.gif) repeat 0 0;
+    max-width: 1200px;
+    margin: auto;
 }
 
 /* unvisited link */
@@ -37,7 +40,8 @@ a:active {
 .header {
     width: auto;
     height: auto;
-    overflow:auto;
+    overflow: hidden;
+    background: rgb(18,24,217);
     background-color: rgba(18,24,217,0.6);
     top: 0;
     left:0px;
@@ -62,7 +66,6 @@ a:active {
 }
 
 body {
-    background: url(../images/bg.gif) repeat 0 0;
     color: white;
 }
 
