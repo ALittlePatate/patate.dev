@@ -44,11 +44,21 @@ a:active {
     right:0px;
 }
 
-.menu  {
+.menu {
     display: flex;
-    gap: 10px;
     font-weight: bold;
     margin-top: 6.4%;
+}
+
+/* Add spacing between child elements using margins */
+/* Doing this hack to ensure IE compatibility */
+.menu > * {
+    margin-right: 10px; /* Adjust the value as needed */
+}
+
+/* Remove margin from the last child to prevent extra spacing */
+.menu > :last-child {
+    margin-right: 0;
 }
 
 body {
