@@ -27,24 +27,8 @@ def write_file(text) :
 def generate_base(title) :
     base = """
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>"""+title+"""</title>
-    <link rel="stylesheet" type="text/css" href="../css/styles.css"/>
-</head>
+    <!--#include virtual="header.html" -->
 <body>
-    <div class="header">
-        <a href="/">
-            <a href="../index.html"><img alt="Spike" src="../images/spike.jpg" id="spike"></a>
-        </a>
-        <div class="menu">
-            <a> </a>
-            <a href="blog.html">the blog</a>
-			<a href="//github.com/ALittlePatate">github</a>
-            <a href="../pgp/key.txt">pgp key</a>
-        </div>
-    </div>
 
   <article aria-label="Content" itemscope itemtype="http://schema.org/BlogPosting">
     <h1 itemprop="name headline">"""+title+"""</h1>    
@@ -76,12 +60,7 @@ def generate_section(s) :
 def generate_end_file() :
     base = '''
     <p></p></main></article>
-    <footer id="foot">
-		<a href="//gnu.org"><img alt="GNU/Linux" src="../images/footer/gnu_linux.png" /></a>
-		<img alt="" src="../images/footer/internet-privacy.gif" />
-		<a href="//torproject.org"><img alt="Tor" src="../images/footer/tor.gif" /></a>
-		<a href="."><img alt="patate.dev" src="../images/footer/patate_dev.png" /></a>
-	</footer>
+    <!--#include virtual="footer.html" -->
     </html>'''
     
     write_file(base)
