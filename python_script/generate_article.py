@@ -39,6 +39,7 @@ def generate_base(title) :
             <a href="../index.html"><img alt="Spike" src="../images/spike.jpg" id="spike"></a>
         </a>
         <div class="menu">
+            <a> </a>
             <a href="blog.html">the blog</a>
 			<a href="//github.com/ALittlePatate">github</a>
             <a href="../pgp/key.txt">pgp key</a>
