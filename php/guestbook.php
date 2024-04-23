@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $message = $_POST['message'];
 
-    $sql = "INSERT INTO guestbook (name, message) VALUES ('$name', '$message')";
+    $sql = "INSERT INTO " . $config['DB_NAME'] . " (name, message) VALUES ('$name', '$message')";
     mysqli_query($conn, $sql);
 
     header("Location: " . $_SERVER['PHP_SELF']);
@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = "";
 }
 
-$sql = "SELECT * FROM guestbook";
+$sql = "SELECT * FROM " . $config['DB_NAME'];
 $result = mysqli_query($conn, $sql);
 
 echo "<p>Welcome to my guestbook, be free to leave a message !</p>";
