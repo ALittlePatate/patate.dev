@@ -17,6 +17,20 @@ html {
     margin: auto;
 }
 
+#guestbook_table {
+    width: 100%;
+    height: auto;
+}
+
+#guestbook_name {
+    display: block;
+    text-align: center;
+}
+
+textarea {
+  resize: none;
+}
+
 /* unvisited link */
 a:link {
     color: #686bff;
