@@ -1,5 +1,5 @@
-<!--#include virtual="/pages/header.html" -->
 <?php
+include '../pages/header.html';
 $config = require "../../config.php";
 $conn = mysqli_connect($config['DB_ADDR'], $config['DB_USR'], $config['DB_PASSWD'], $config['DB_NAME']);
 
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $sql = "SELECT * FROM " . $config['DB_NAME'];
 $result = mysqli_query($conn, $sql);
 
-echo "<p>Welcome to my guestbook, be free to leave a message !</p>";
+echo "<p>Welcome to my guestbook, feel free to leave a message !</p>";
 echo "<br><br>";
 echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
 echo "<label for='name'>Name: </label>";
@@ -47,5 +47,5 @@ while ($row = mysqli_fetch_assoc($result)) {
 echo "</table>";
 
 mysqli_close($conn);
+include '../pages/footer.html';
 ?>
-<!--#include virtual="/pages/footer.html" -->
