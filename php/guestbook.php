@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = "";
 }
 
-$sql = "SELECT * FROM " . $config['DB_NAME'];
+$sql = "SELECT * FROM " . $config['DB_NAME'] . " ORDER BY id DESC";
 $result = mysqli_query($conn, $sql);
 
 echo "<p>Welcome to my guestbook, feel free to leave a message !</p>";
