@@ -11,8 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $message = $_POST['message'];
 
-    $sql = "INSERT INTO " . $config['DB_NAME'] . " (name, message) VALUES ('$name', '$message')";
-    mysqli_query($conn, $sql);
+    $sql = "INSERT INTO " . $config['DB_NAME'] . " (name, message) VALUES (?, ?)";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ss", $name, $message);
+    mysqli_stmt_execute($stmt);
 
     header("Location: " . $_SERVER['PHP_SELF']);
     exit;
