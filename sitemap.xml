@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<url>
+  <loc>https://patate.dev/</loc>
+  <lastmod>2024-04-25T08:42:59+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://patate.dev/pages/blog.html</loc>
+  <lastmod>2024-04-25T08:42:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://patate.dev/pgp/key.txt</loc>
+  <lastmod>2024-04-23T16:36:40+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://patate.dev/php/guestbook.php</loc>
+  <lastmod>2024-04-25T08:42:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://patate.dev/.</loc>
+  <lastmod>2024-04-25T08:42:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://patate.dev/pages/reversing_vac_winapi_hooks.html</loc>
+  <lastmod>2024-04-25T08:42:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://patate.dev/pages/insecure_mode_bypass.html</loc>
+  <lastmod>2024-04-25T08:42:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://patate.dev/pages/posts/21_04_2024.txt</loc>
+  <lastmod>2024-04-23T16:36:40+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://patate.dev/pages/.</loc>
+  <lastmod>2024-04-25T08:42:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://patate.dev/php/.</loc>
+  <lastmod>2024-04-25T08:42:59+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://patate.dev/pages/posts/</loc>
+  <lastmod>2024-04-25T08:42:59+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://patate.dev/pages/</loc>
+  <lastmod>2024-04-25T08:42:59+00:00</lastmod>
+  <priority>0.41</priority>
+</url>
+</urlset>
