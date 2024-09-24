@@ -1,10 +1,10 @@
 /* centers the website */
 html {
+	max-width: 1200px;
+    margin: auto;
     background: rgb(18,24,217);
     background-color: rgba(18,24,217);
     background: url(../images/bg.gif) repeat 0 0;
-    max-width: 1200px;
-    margin: auto;
 }
 
 #spike {
@@ -62,10 +62,10 @@ a:active {
 }
 
 .menu {
-	display: inline-block;
+	display: flex;
 	font-weight: bold;
-    margin-top: 5.3%;
-	margin-left: 1%;
+    margin-top: -1.9%;
+	margin-left: 12%;
 }
 
 /* Add spacing between child elements using margins */
