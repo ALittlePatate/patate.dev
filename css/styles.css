@@ -8,11 +8,10 @@ html {
 }
 
 #spike {
-    float: left;
     border-style:solid;
-    border-color:rgba(18,24,217,0.6);
+	border-color:rgba(18,24,217,0.6);
     width: 10.1%;
-    height: auto;
+    height: 10.1%;
     max-width: 100%;
     object-fit: cover;
 }
@@ -63,10 +62,10 @@ a:active {
 }
 
 .menu {
-    display: flex;
-    font-weight: bold;
-    margin-top: 6.4%;
-	margin-left: 10%;
+	display: inline-block;
+	font-weight: bold;
+    margin-top: 5.3%;
+	margin-left: 1%;
 }
 
 /* Add spacing between child elements using margins */
