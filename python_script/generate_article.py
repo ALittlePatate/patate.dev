@@ -72,11 +72,12 @@ def generate_image(path) :
     write_file(base)
 
 def set_foldername(name) :
-    os.mkdir("../images/"+name)
+    try : os.mkdir("../images/"+name)
+    except: pass
     onlyfiles = [f for f in listdir(".") if isfile(join(".", f))]
     for f in onlyfiles :
         if f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".png") or f.endswith(".ico") or f.endswith(".gif") :
-            shutil.move(f, "../images/"+name+"/"+f)
+            shutil.copy(f, "../images/"+name+"/"+f)
 
 def main() :
     Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing

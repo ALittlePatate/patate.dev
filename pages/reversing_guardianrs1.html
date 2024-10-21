@@ -1,0 +1,62 @@
+
+    <!--#include virtual="header.html" -->
+  <article aria-label="Content" itemscope itemtype="http://schema.org/BlogPosting">
+    <h1 itemprop="name headline">Reverse engineering Guardian-rs's virtualization</h1>    
+
+<time class="mono"> Oct 21, 2024</time>
+
+<main itemprop="articleBody" style="position: relative">
+<p>I always wanted to analyze a binary file protected with virtualization, I've read a few papers (some of them I will link at the end of the article). But it always seemed way too hard for me, especially with all of the obfuscation and code mutation commercial virtualizer use.</p><p>I needed something I could learn from and that didn't add much obfuscation to the PE, introducing <a href="https://github.com/vmctx/guardian-rs" target="_blank"> Guardian-rs</a></p><p>This open source project is written in rust and implements a simple stack-based VM.</p><p>Let's begin !</p><p></p>
+<h2 id="Protecting-a-function">
+    <a href="#Protecting-a-function">Protecting a function</a>
+</h2>
+<p>I created this simple test function that will be virtualized :</p>
+<p>
+    <img class="center_image" src="../images/reversing_guardianrs1/calc_function.png" alt="" />
+</p>
+<p></p><p>Notice the <code class="language-plaintext highlighter-rouge">#pragma optimize("", off)</code><code class="language-plaintext highlighter-rouge">, this way the compiler doesn't optimize out the function.
+</code></p><p>Loading up the code in IDA I can see the following assembly code for the <code class="language-plaintext highlighter-rouge">calc</code> function :</p><p></p>
+<p>
+    <img class="center_image" src="../images/reversing_guardianrs1/calc_function_asm.png" alt="" />
+</p>
+<p></p><p>So far, so good.</p><p>After protecting the function with Guardian-rs (which was actually pretty fast) :</p><p></p>
+<p>
+    <img class="center_image" src="../images/reversing_guardianrs1/calc_entry.png" alt="" />
+</p>
+<p></p><p>We can see that the code of the function got replaced with a <code class="language-plaintext highlighter-rouge">jmp</code> preceded by a <code class="language-plaintext highlighter-rouge">push</code> .</p><p>What could this possibly mean ??</p><p></p>
+<h2 id="Understanding-the-VM-structure">
+    <a href="#Understanding-the-VM-structure">Understanding the VM structure</a>
+</h2>
+<p>A typical Virtual machine usually follows this architecture (I stole the image from <a href="https://www.msreverseengineering.com/blog/2018/1/31/finspy-vm-part-2-vm-analysis-and-bytecode-disassembly" target="_blank">msreverseengineering's</a> blog) :</p><p></p>
+<p>
+    <img class="center_image" src="../images/reversing_guardianrs1/VMArch.png" alt="" />
+</p>
+<p></p><p>Following this pattern, we can enter in the <code class="language-plaintext highlighter-rouge">VMEntry</code> function and continue our analysis :</p><p></p>
+<p>
+    <img class="center_image" src="../images/reversing_guardianrs1/vmentry_firstblock.png" alt="" />
+</p>
+<p></p><p>We can see that the flags and the registers are pushed onto the stack to keep the program state as it was.</p><p>Then the VM will initialize its internal structures, mainly the <code class="language-plaintext highlighter-rouge">Machine</code> structure which mainly holds :</p><ul><li>The program counter</li><li>The stack pointer</li><li>The registers</li><li>The flags</li></ul><p></p><p>Note that the VM uses <code class="language-plaintext highlighter-rouge">syscalls</code> to <code class="language-plaintext highlighter-rouge">NtAllocateVirtualMemory</code> to allocate its context.</p><p>Then the VM pops the registers and copies them to its internal context structure, this way, the interpreted bytecode can inherit from the "normal" context of the program.</p><p></p>
+<p>
+    <img class="center_image" src="../images/reversing_guardianrs1/vmentry_secondblock.png" alt="" />
+</p>
+<p></p><p>And finally the VM calls the <code class="language-plaintext highlighter-rouge">VMDispatcher</code> . The role of this function is to read, decode and interpret the opcodes of the function. In its most primitive implementation, it's as simple as a function pointer.</p><p>Before calling the function, the VM pushes the address of the first instruction to be executed onto the stack. Which is the offset pushed by the <code class="language-plaintext highlighter-rouge">calc</code> function (just before the <code class="language-plaintext highlighter-rouge">jmp</code> ), plus the base address of the program (fetched using the Thread Environement Block).</p><p>Following this address we can find the bytecode for our function !</p><p></p>
+<p>
+    <img class="center_image" src="../images/reversing_guardianrs1/function_bytecode.png" alt="" />
+</p>
+<p></p>
+<h2 id="Writing-a-bytecode-disassembler">
+    <a href="#Writing-a-bytecode-disassembler">Writing a bytecode disassembler</a>
+</h2>
+<p>At this stage, we'd have to reverse engineer the <code class="language-plaintext highlighter-rouge">VMDispatcher</code> to understand how the bytecode is encoded but I instead decided to cheat and look at the source code of the virtualizer (lol).</p><p>The bytecode follows this simple format :</p><p></p><p><table><tbody><tr><th>Mnemonic (1 byte)</th><th>Size of the data (1 byte) </th><th>Argument (1 byte or more)</th></tr><tr><td>0x16 (Vmctx)</td><td>0x08 (Qword)</td><td>None</td></tr><tr><td>0x00 (Const)</td><td>0x08 (Qword)</td><td>0x20 (Rdx)</td></tr></tbody></table></p><p></p><p>Following this example, we can retrieve the first instructions of our function !</p><p>Using this simple logic and by looking at the existing code of Guardian-rs I could write a disassembler (code <a href="../misc/reversing_guardianrs1/disassembler.py" target="_blank">here</a> ).</p><p>It gave me the following code :</p><p></p>
+<p>
+    <img class="center_image" src="../images/reversing_guardianrs1/disassembled_bytecode_sample.png" alt="" />
+</p>
+<p></p><p>We can see a few <code class="language-plaintext highlighter-rouge">Vmctx</code> which pushes a pointer to the <code class="language-plaintext highlighter-rouge">Machine</code> struct onto the stack.</p><p>Basically in 8 lines it has copied the content of ~Rdx~ and ~Rsp~ at the top of the stack.</p><p></p>
+<h2 id="Conclusion-and-todo-list">
+    <a href="#Conclusion-and-todo-list">Conclusion and todo list</a>
+</h2>
+<p>Todo :</p><ul><li>Translate the disassembly into intel x86 assembly</li><li>Automate the process</li><li>Optimize the code</li></ul><p></p><p>There is still work to be done but i'm pretty proud of what I did, especially considering it's my first time reversing a VM.</p><p>I want to thank the author of the Guardian-rs project who kindly responded to my questions and to the people who made the articles I based my work on :</p><ul><li> <a href="https://www.msreverseengineering.com/blog/2018/1/31/finspy-vm-part-2-vm-analysis-and-bytecode-disassembly" target="_blank">msreverseengineering's blog</a> </li><li> <a href="https://github.com/67-6f-64/AntiOreans-CodeDevirtualizer/blob/main/Masters%20Thesis.pdf" target="_blank">Valdemar Carøe's thesis</a> </li></ul><p></p><p>To be continued...</p>
+    <p></p></main></article>
+    <!--#include virtual="footer.html" -->
+    </body>
+    </html>
