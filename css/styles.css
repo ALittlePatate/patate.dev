@@ -1,7 +1,11 @@
-/* centers the website */
 html {
 	max-width: 1200px;
-    margin: auto;
+	
+	/* no idea why or how it works, but it works*/
+    display: block;
+	margin-left: 20%;
+	margin-right: 20%;
+	
     background: rgb(18,24,217);
     background-color: rgba(18,24,217);
     background: url(../images/bg.gif) repeat 0 0;
@@ -54,7 +58,7 @@ a:active {
     width: auto;
     height: auto;
     overflow: hidden;
-    background: rgb(18,24,217);
+    background: #1218d9;
     background-color: rgba(18,24,217,0.6);
     top: 0;
     left:0px;
@@ -80,13 +84,11 @@ a:active {
 }
 
 body {
-    color: white;
 	background-color: transparent;
 }
 
 p {
     font-size: large;
-    margin-left: 3px;
     margin-bottom: -5px;
 }
 
