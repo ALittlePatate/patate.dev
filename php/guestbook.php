@@ -39,14 +39,15 @@ echo "</form>";
 
 echo "<br><br>";
 echo "<table id='guestbook_table' border='1'>";
-echo "<tr><th>Name</th><th>Message</th></tr>";
+echo "<tr><th style='color: white;'>Name</th><th style='color: white;'>Message</th></tr>";
 while ($row = mysqli_fetch_assoc($result)) {
     echo "<tr>";
-    echo "<td id='guestbook_name'>" . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . "</td>";
-    echo "<td>" . htmlspecialchars($row['message'], ENT_QUOTES, 'UTF-8') . "</td>";
+    echo "<td style='color: white;' id='guestbook_name'>" . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . "</td>";
+    echo "<td style='color: white;'>" . htmlspecialchars($row['message'], ENT_QUOTES, 'UTF-8') . "</td>";
     echo "</tr>";
 }
 echo "</table>";
+echo "<br><br>";
 
 mysqli_close($conn);
 include '../pages/footer.html';
